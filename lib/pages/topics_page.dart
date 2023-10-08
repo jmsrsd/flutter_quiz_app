@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../blocs/quiz_bloc.dart';
 import '../components/buttons/topic_button.dart';
 import '../components/gap.dart';
 import '../routes/quiz_route.dart';
@@ -12,6 +14,10 @@ class TopicsPage extends StatelessWidget {
 
   @override
   build(context) {
+    final json = context.watch<QuizBloc>().state?.toJson() ?? {};
+
+    final topics = json.keys.toList();
+
     return Scaffold(
       body: Column(
         children: [
@@ -82,28 +88,17 @@ class TopicsPage extends StatelessWidget {
                   width: 320,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TopicButton(
-                        label: 'politics',
-                        onPressed: () {
-                          context.push(quizRoute.path);
-                        },
-                      ),
-                      const Gap(6),
-                      TopicButton(
-                        label: 'animals',
-                        onPressed: () {
-                          context.push(quizRoute.path);
-                        },
-                      ),
-                      const Gap(6),
-                      TopicButton(
-                        label: 'gk',
-                        onPressed: () {
-                          context.push(quizRoute.path);
-                        },
-                      ),
-                    ],
+                    children: topics.map((e) {
+                      return [
+                        TopicButton(
+                          label: e,
+                          onPressed: () {
+                            context.push(quizRoute.path);
+                          },
+                        ),
+                        const Gap(6),
+                      ];
+                    }).reduce((a, b) => [...a, ...b]),
                   ),
                 ),
               ),

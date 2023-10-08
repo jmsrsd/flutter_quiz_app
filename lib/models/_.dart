@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
 class QuizCollection extends Equatable {
-  const QuizCollection({
+  QuizCollection({
     required this.politics,
     required this.animals,
     required this.gk,
   });
 
-  final List<Quiz> politics;
-  final List<Quiz> animals;
-  final List<Quiz> gk;
+  final Map<String, Animal> politics;
+  final Map<String, Animal> animals;
+  final Map<String, Animal> gk;
 
   QuizCollection copyWith({
-    List<Quiz>? politics,
-    List<Quiz>? animals,
-    List<Quiz>? gk,
+    Map<String, Animal>? politics,
+    Map<String, Animal>? animals,
+    Map<String, Animal>? gk,
   }) {
     return QuizCollection(
       politics: politics ?? this.politics,
@@ -25,17 +25,22 @@ class QuizCollection extends Equatable {
 
   factory QuizCollection.fromJson(Map<String, dynamic> json) {
     return QuizCollection(
-      politics:
-          (json["politics"] as List).map((e) => Quiz.fromJson(e)).toList(),
-      animals: (json["animals"] as List).map((e) => Quiz.fromJson(e)).toList(),
-      gk: (json["gk"] as List).map((e) => Quiz.fromJson(e)).toList(),
+      politics: Map.from(json["politics"])
+          .map((k, v) => MapEntry<String, Animal>(k, Animal.fromJson(v))),
+      animals: Map.from(json["animals"])
+          .map((k, v) => MapEntry<String, Animal>(k, Animal.fromJson(v))),
+      gk: Map.from(json["gk"])
+          .map((k, v) => MapEntry<String, Animal>(k, Animal.fromJson(v))),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "politics": politics.map((e) => e.toJson()),
-        "animals": animals.map((e) => e.toJson()),
-        "gk": gk.map((e) => e.toJson()),
+        "politics": Map.from(politics)
+            .map((k, v) => MapEntry<String, dynamic>(k, v?.toJson())),
+        "animals": Map.from(animals)
+            .map((k, v) => MapEntry<String, dynamic>(k, v?.toJson())),
+        "gk": Map.from(gk)
+            .map((k, v) => MapEntry<String, dynamic>(k, v?.toJson())),
       };
 
   @override
@@ -46,8 +51,8 @@ class QuizCollection extends Equatable {
       ];
 }
 
-class Quiz extends Equatable {
-  const Quiz({
+class Animal extends Equatable {
+  Animal({
     required this.question,
     required this.image,
     required this.answer,
@@ -55,26 +60,25 @@ class Quiz extends Equatable {
 
   final String? question;
   final String? image;
-  final QuizAnswer? answer;
+  final Answer? answer;
 
-  Quiz copyWith({
+  Animal copyWith({
     String? question,
     String? image,
-    QuizAnswer? answer,
+    Answer? answer,
   }) {
-    return Quiz(
+    return Animal(
       question: question ?? this.question,
       image: image ?? this.image,
       answer: answer ?? this.answer,
     );
   }
 
-  factory Quiz.fromJson(Map<String, dynamic> json) {
-    return Quiz(
+  factory Animal.fromJson(Map<String, dynamic> json) {
+    return Animal(
       question: json["question"],
       image: json["image"],
-      answer:
-          json["answer"] == null ? null : QuizAnswer.fromJson(json["answer"]),
+      answer: json["answer"] == null ? null : Answer.fromJson(json["answer"]),
     );
   }
 
@@ -92,35 +96,37 @@ class Quiz extends Equatable {
       ];
 }
 
-class QuizAnswer extends Equatable {
-  const QuizAnswer({
+class Answer extends Equatable {
+  Answer({
     required this.correct,
     required this.incorrects,
   });
 
   final String? correct;
-  final List<String> incorrects;
+  final Map<String, String> incorrects;
 
-  QuizAnswer copyWith({
+  Answer copyWith({
     String? correct,
-    List<String>? incorrects,
+    Map<String, String>? incorrects,
   }) {
-    return QuizAnswer(
+    return Answer(
       correct: correct ?? this.correct,
       incorrects: incorrects ?? this.incorrects,
     );
   }
 
-  factory QuizAnswer.fromJson(Map<String, dynamic> json) {
-    return QuizAnswer(
+  factory Answer.fromJson(Map<String, dynamic> json) {
+    return Answer(
       correct: json["correct"],
-      incorrects: (json["incorrects"] as List).map((e) => '$e').toList(),
+      incorrects: Map.from(json["incorrects"])
+          .map((k, v) => MapEntry<String, String>(k, v)),
     );
   }
 
   Map<String, dynamic> toJson() => {
         "correct": correct,
-        "incorrects": incorrects,
+        "incorrects":
+            Map.from(incorrects).map((k, v) => MapEntry<String, dynamic>(k, v)),
       };
 
   @override

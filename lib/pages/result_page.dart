@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../components/gap.dart';
 import '../routes/home_route.dart';
 
 class ResultPage extends StatelessWidget {
@@ -75,11 +76,31 @@ class ResultPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Share your score'),
+                      const Gap(24),
+                      Container(
+                        width: double.maxFinite,
+                        alignment: Alignment.center,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Share your score'),
+                        ),
                       ),
-                      const Text('Your Report'),
+                      const Gap(12),
+                      Container(
+                        width: double.maxFinite,
+                        alignment: Alignment.center,
+                        child: const Text('Your Report'),
+                      ),
+                      const Gap(12),
+                      const Text('Who is lorem ipsum dolor sit?'),
+                      const Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.check),
+                          Text('Foo Bar'),
+                        ],
+                      ),
+                      const Gap(12),
                       const Text('Who is lorem ipsum dolor sit?'),
                       const Row(
                         crossAxisAlignment: CrossAxisAlignment.center,

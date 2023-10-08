@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 
-import '../uis/routes/home_route.dart';
-import '../uis/routes/quiz_route.dart';
-import '../uis/routes/result_route.dart';
-import '../uis/routes/topics_route.dart';
+import '../routes/home_route.dart';
+import '../routes/quiz_route.dart';
+import '../routes/result_route.dart';
+import '../routes/topics_route.dart';
 
 final _router = GoRouter(
   initialLocation: homeRoute.path,
