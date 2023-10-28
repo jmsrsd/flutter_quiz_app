@@ -5,16 +5,14 @@ import '../routes/quiz_route.dart';
 import '../routes/result_route.dart';
 import '../routes/topics_route.dart';
 
-final _router = GoRouter(
-  initialLocation: homeRoute.path,
-  routes: [
-    homeRoute,
-    topicsRoute,
-    quizRoute,
-    resultRoute,
-  ],
-);
-
 GoRouter get router {
-  return _router;
+  return GoRouter(
+    initialLocation: homeRoute.path,
+    routes: [
+      homeRoute,
+      topicsRoute,
+      quizRoute,
+      resultRoute,
+    ],
+  );
 }

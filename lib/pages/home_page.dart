@@ -77,31 +77,32 @@ class _HomePageState extends State<HomePage> {
     );
 
     return FutureBuilder(
-        future: QuizService().collectQuiz(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final data = snapshot.data;
-
-          context.read<QuizBloc>().set(data);
-
-          return HomeLayout(
-            children: [
-              const Gap(48),
-              image,
-              const Gap(48),
-              title,
-              const Gap(48),
-              menu,
-              const Gap(48),
-              social,
-              const Gap(48),
-            ],
+      future: QuizService().collectQuiz(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(
+            child: CircularProgressIndicator(),
           );
-        });
+        }
+
+        final data = snapshot.data;
+
+        context.read<QuizBloc>().set(data);
+
+        return HomeLayout(
+          children: [
+            const Gap(48),
+            image,
+            const Gap(48),
+            title,
+            const Gap(48),
+            menu,
+            const Gap(48),
+            social,
+            const Gap(48),
+          ],
+        );
+      },
+    );
   }
 }

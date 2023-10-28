@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import '../firebase_options.dart';
 import 'app.dart';
+import 'app_provider.dart';
 
 Future<Widget> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,5 +12,7 @@ Future<Widget> bootstrap() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  return const App();
+  return const AppProvider(
+    child: App(),
+  );
 }
