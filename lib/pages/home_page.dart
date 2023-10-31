@@ -9,6 +9,8 @@ import '../components/buttons/topics_button.dart';
 import '../components/gap.dart';
 import '../components/buttons/play_button.dart';
 import '../layouts/home_layout.dart';
+import '../models/quiz_collection.dart';
+import '../repositories/quiz_repository.dart';
 import '../routes/quiz_route.dart';
 import '../routes/topics_route.dart';
 import '../services/quiz_service.dart';
@@ -74,18 +76,40 @@ class _HomePageState extends State<HomePage> {
       ],
     );
 
+    final quiz = context.read<QuizBloc>();
+
     return FutureBuilder(
-      future: QuizService().collectQuiz(),
+      future: quiz.fetch(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+        // if (snapshot.connectionState != ConnectionState.done) {
+        //   return const Center(
+        //     child: CircularProgressIndicator(),
+        //   );
+        // }
 
-        final data = snapshot.data;
-
-        context.read<QuizBloc>().set(data);
+        // if (snapshot.data == false) {
+        //   WidgetsBinding.instance.addPostFrameCallback((_) {
+        //     showDialog(
+        //       context: context,
+        //       builder: (context) {
+        //         return AlertDialog(
+        //           title: const Text(
+        //             'Something went wrong!',
+        //           ),
+        //           content: const Text(
+        //             'There is something wrong in our end.',
+        //           ),
+        //           actions: [
+        //             TextButton(
+        //               onPressed: () => context.pop(),
+        //               child: const Text('DISMISS'),
+        //             ),
+        //           ],
+        //         );
+        //       },
+        //     );
+        //   });
+        // }
 
         return HomeLayout(
           children: [

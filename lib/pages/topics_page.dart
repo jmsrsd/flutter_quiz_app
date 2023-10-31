@@ -8,16 +8,62 @@ import '../components/gap.dart';
 import '../routes/home_route.dart';
 import '../routes/quiz_route.dart';
 
-class TopicsPage extends StatelessWidget {
+class TopicsPage extends StatefulWidget {
   const TopicsPage({
     super.key,
   });
 
   @override
-  build(context) {
-    final json = context.watch<QuizBloc>().state?.toJson() ?? {};
+  State<TopicsPage> createState() => _TopicsPageState();
+}
 
-    final topics = json.keys.toList();
+class _TopicsPageState extends State<TopicsPage> {
+  final search = TextEditingController();
+
+  @override
+  initState() {
+    super.initState();
+
+    search.addListener(() => setState(() {}));
+  }
+
+  @override
+  dispose() {
+    search.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  build(context) {
+    final bloc = context.watch<QuizBloc>();
+
+    final state = bloc.state;
+
+    if (state == null) {
+      return Scaffold(
+        body: FutureBuilder(
+          future: bloc.fetch(),
+          builder: (context, _) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+      );
+    }
+
+    final json = state.toJson();
+
+    final topics = json.keys.where((k) {
+      final query = search.text.trim();
+
+      if (query.isEmpty) {
+        return true;
+      }
+
+      return k.contains(query);
+    }).toList();
 
     return Scaffold(
       body: Column(
@@ -57,6 +103,7 @@ class TopicsPage extends StatelessWidget {
                   width: 320,
                   height: double.maxFinite,
                   child: TextField(
+                    controller: search,
                     decoration: InputDecoration(
                       constraints: const BoxConstraints(
                         minWidth: double.maxFinite,
@@ -89,17 +136,19 @@ class TopicsPage extends StatelessWidget {
                   width: 320,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: topics.map((e) {
-                      return [
-                        TopicButton(
-                          label: e,
-                          onPressed: () {
-                            context.go(quizRoute.path);
-                          },
-                        ),
-                        const Gap(6),
-                      ];
-                    }).reduce((a, b) => [...a, ...b]),
+                    children: topics.isEmpty
+                        ? []
+                        : topics.map((e) {
+                            return [
+                              TopicButton(
+                                label: e,
+                                onPressed: () {
+                                  context.go(quizRoute.path);
+                                },
+                              ),
+                              const Gap(6),
+                            ];
+                          }).reduce((a, b) => [...a, ...b]),
                   ),
                 ),
               ),

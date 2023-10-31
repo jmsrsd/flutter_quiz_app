@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/answer_bloc.dart';
 import '../blocs/question_bloc.dart';
 import '../blocs/quiz_bloc.dart';
+import '../repositories/quiz_repository.dart';
 
 class AppProvider extends StatelessWidget {
   final Widget child;
@@ -15,13 +16,18 @@ class AppProvider extends StatelessWidget {
 
   @override
   build(context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(create: (_) => QuizBloc()),
-        BlocProvider(create: (_) => QuestionBloc()),
-        BlocProvider(create: (_) => AnswerBloc()),
+        RepositoryProvider(create: (_) => QuizRepository()..init()),
       ],
-      child: child,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => QuizBloc.of(context)),
+          BlocProvider(create: (_) => QuestionBloc()),
+          BlocProvider(create: (_) => AnswerBloc()),
+        ],
+        child: child,
+      ),
     );
   }
 }

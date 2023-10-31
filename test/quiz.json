@@ -1,190 +1,139 @@
 {
   "quiz": {
-    "politics": {
-      "0": {
-        "question": "What was the primary focus of the G20 when it was founded in 1999?",
-        "image": "https://www.indonesia.travel/content/dam/indtravelrevamp/id-id/ide-liburan/6-fakta-menarik-seputar-g20-indonesia-2022-bikin-bangga/anggota-g20.jpg",
-        "answer": {
-          "correct": "Economic governance",
-          "incorrects": {
-            "0": "Political governance",
-            "1": "Social governance",
-            "2": "Environmental governance"
-          }
-        }
-      },
-      "1": {
-        "question": "What was the most populous city in the Confederate States of America?",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Map_of_CSA_4.png/615px-Map_of_CSA_4.png",
-        "answer": {
-          "correct": "Atlanta",
-          "incorrects": {
-            "0": "Richmond",
-            "1": "New Orleans",
-            "2": "Nashville"
-          }
-        }
-      },
-      "2": {
-        "question": "Which of the following is NOT one of the United Nations' principal organs established by the UN Charter?",
-        "image": null,
-        "answer": {
-          "correct": "World Health Organization",
-          "incorrects": {
-            "0": "Security Council",
-            "1": "General Assembly",
-            "2": "International Court of Justice"
-          }
-        }
-      },
-      "3": {
-        "question": "Which of the following is NOT a method of partition in international politics?",
-        "image": null,
-        "answer": {
-          "correct": "Consensus Building",
-          "incorrects": {
-            "0": "Peaceful Negotiations",
-            "1": "Violent Confrontation",
-            "2": "Unilateral Decision"
-          }
-        }
-      },
-      "4": {
-        "question": "Which approach to International Political Economy (IPE) considers free trade to be the best means of enhancing economic security?",
-        "image": null,
-        "answer": {
-          "correct": "Mercantilism",
-          "incorrects": {
-            "0": "Socialism",
-            "1": "Liberalism",
-            "2": "Communism"
-          }
-        }
-      }
-    },
-    "animals": {
-      "0": {
-        "question": "Which animal is known to store large amounts of water in its body?",
-        "image": null,
+    "animals": [
+      {
         "answer": {
           "correct": "Camel",
-          "incorrects": {
-            "0": "Elephant",
-            "1": "Rabbit",
-            "2": "Fox"
-          }
-        }
+          "incorrects": ["Elephant", "Rabbit", "Fox"]
+        },
+        "question": "Which animal is known to store large amounts of water in its body?"
       },
-      "1": {
-        "question": "What color is the skin under the polar bear’s white fur?",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg",
+      {
         "answer": {
           "correct": "Brown",
-          "incorrects": {
-            "0": "White",
-            "1": "Black",
-            "2": "Yellow"
-          }
-        }
+          "incorrects": ["White", "Black", "Yellow"]
+        },
+        "image": "https://upload.wikimedia.org/wikipedia/commons/6/66/Polar_Bear_-_Alaska_%28cropped%29.jpg",
+        "question": "What color is the skin under the polar bear’s white fur?"
       },
-      "2": {
-        "question": "Which animal is awake at night and sleeps during the day?",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/3/37/December_2009_partial_lunar_eclipse-cropped.jpg",
+      {
         "answer": {
           "correct": "Owl",
-          "incorrects": {
-            "0": "Squirrel",
-            "1": "Penguin",
-            "2": "Dolphin"
-          }
-        }
+          "incorrects": ["Squirrel", "Penguin", "Dolphin"]
+        },
+        "image": "https://upload.wikimedia.org/wikipedia/commons/3/37/December_2009_partial_lunar_eclipse-cropped.jpg",
+        "question": "Which animal is awake at night and sleeps during the day?"
       },
-      "3": {
-        "question": "What is the animal that blows up like a balloon when it feels threatened?",
-        "image": null,
+      {
         "answer": {
           "correct": "Octopus",
-          "incorrects": {
-            "0": "Clownfish",
-            "1": "Turtle",
-            "2": "Snake"
-          }
-        }
+          "incorrects": ["Clownfish", "Turtle", "Snake"]
+        },
+        "question": "What is the animal that blows up like a balloon when it feels threatened?"
       },
-      "4": {
-        "question": "Which bear is known to have a bite strong enough to break a bowling ball?",
-        "image": null,
+      {
         "answer": {
           "correct": "Grizzly Bear",
-          "incorrects": {
-            "0": "Polar Bear",
-            "1": "Panda Bear",
-            "2": "Black Bear"
-          }
-        }
+          "incorrects": ["Polar Bear", "Panda Bear", "Black Bear"]
+        },
+        "question": "Which bear is known to have a bite strong enough to break a bowling ball?"
       }
-    },
-    "gk": {
-      "0": {
-        "question": "What is the name of the day after Thanksgiving?",
-        "image": null,
+    ],
+    "gk": [
+      {
         "answer": {
           "correct": "Black Friday",
-          "incorrects": {
-            "0": "Christmas",
-            "1": "New Year's",
-            "2": "Christmas Eve"
-          }
-        }
+          "incorrects": ["Christmas", "New Year's", "Christmas Eve"]
+        },
+        "question": "What is the name of the day after Thanksgiving?"
       },
-      "1": {
-        "question": "Which Game of Thrones house does Daenerys belong to?",
-        "image": "https://static.wikia.nocookie.net/gameofthrones/images/4/4f/Daenerys_Season_8.jpg/revision/latest?cb=20190415212013",
+      {
         "answer": {
           "correct": "Targaryen",
-          "incorrects": {
-            "0": "Stark",
-            "1": "Lannister",
-            "2": "Martell"
-          }
-        }
+          "incorrects": ["Stark", "Lannister", "Martell"]
+        },
+        "image": "https://static.wikia.nocookie.net/gameofthrones/images/4/4f/Daenerys_Season_8.jpg/revision/latest?cb=20190415212013",
+        "question": "Which Game of Thrones house does Daenerys belong to?"
       },
-      "2": {
-        "question": "Which artist painted the ceiling of the Sistine Chapel?",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Sistine_Chapel_ceiling_02_%28brightened%29.jpg",
+      {
         "answer": {
           "correct": "Michelangelo",
-          "incorrects": {
-            "0": "Leonardo da Vinci",
-            "1": "Raphael",
-            "2": "Donatello"
-          }
-        }
+          "incorrects": ["Leonardo da Vinci", "Raphael", "Donatello"]
+        },
+        "image": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Sistine_Chapel_ceiling_02_%28brightened%29.jpg",
+        "question": "Which artist painted the ceiling of the Sistine Chapel?"
       },
-      "3": {
-        "question": "Who is regarded as the inventor of the cubism movement?",
-        "image": "https://upload.wikimedia.org/wikipedia/en/1/1c/Pablo_Picasso%2C_1910%2C_Girl_with_a_Mandolin_%28Fanny_Tellier%29%2C_oil_on_canvas%2C_100.3_x_73.6_cm%2C_Museum_of_Modern_Art_New_York..jpg",
+      {
         "answer": {
           "correct": "Pablo Picasso",
-          "incorrects": {
-            "0": "Vincent van Gogh",
-            "1": "Henri Matisse",
-            "2": "Georges Braque"
-          }
-        }
+          "incorrects": ["Vincent van Gogh", "Henri Matisse", "Georges Braque"]
+        },
+        "image": "https://upload.wikimedia.org/wikipedia/en/1/1c/Pablo_Picasso%2C_1910%2C_Girl_with_a_Mandolin_%28Fanny_Tellier%29%2C_oil_on_canvas%2C_100.3_x_73.6_cm%2C_Museum_of_Modern_Art_New_York..jpg",
+        "question": "Who is regarded as the inventor of the cubism movement?"
       },
-      "4": {
-        "question": "What famous speech did Martin Luther King Jr. give in Washington DC in August 1963?",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/0/05/Martin_Luther_King%2C_Jr..jpg",
+      {
         "answer": {
           "correct": "\"I Have a Dream\"",
-          "incorrects": {
-            "0": "\"The Great Emancipation Proclamation\"",
-            "1": "\"The Emancipation Proclamation\"",
-            "2": "\"The Gettysburg Address\""
-          }
-        }
+          "incorrects": [
+            "\"The Great Emancipation Proclamation\"",
+            "\"The Emancipation Proclamation\"",
+            "\"The Gettysburg Address\""
+          ]
+        },
+        "image": "https://upload.wikimedia.org/wikipedia/commons/0/05/Martin_Luther_King%2C_Jr..jpg",
+        "question": "What famous speech did Martin Luther King Jr. give in Washington DC in August 1963?"
       }
-    }
+    ],
+    "politics": [
+      {
+        "answer": {
+          "correct": "Economic governance",
+          "incorrects": [
+            "Political governance",
+            "Social governance",
+            "Environmental governance"
+          ]
+        },
+        "image": "https://www.indonesia.travel/content/dam/indtravelrevamp/id-id/ide-liburan/6-fakta-menarik-seputar-g20-indonesia-2022-bikin-bangga/anggota-g20.jpg",
+        "question": "What was the primary focus of the G20 when it was founded in 1999?"
+      },
+      {
+        "answer": {
+          "correct": "Atlanta",
+          "incorrects": ["Richmond", "New Orleans", "Nashville"]
+        },
+        "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Map_of_CSA_4.png/615px-Map_of_CSA_4.png",
+        "question": "What was the most populous city in the Confederate States of America?"
+      },
+      {
+        "answer": {
+          "correct": "World Health Organization",
+          "incorrects": [
+            "Security Council",
+            "General Assembly",
+            "International Court of Justice"
+          ]
+        },
+        "question": "Which of the following is NOT one of the United Nations' principal organs established by the UN Charter?"
+      },
+      {
+        "answer": {
+          "correct": "Consensus Building",
+          "incorrects": [
+            "Peaceful Negotiations",
+            "Violent Confrontation",
+            "Unilateral Decision"
+          ]
+        },
+        "question": "Which of the following is NOT a method of partition in international politics?"
+      },
+      {
+        "answer": {
+          "correct": "Mercantilism",
+          "incorrects": ["Socialism", "Liberalism", "Communism"]
+        },
+        "question": "Which approach to International Political Economy (IPE) considers free trade to be the best means of enhancing economic security?"
+      }
+    ]
   }
 }
