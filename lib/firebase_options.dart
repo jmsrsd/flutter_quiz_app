@@ -49,8 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '218349720331',
     projectId: 'flutter-quiz-app-35053',
     authDomain: 'flutter-quiz-app-35053.firebaseapp.com',
-    databaseURL:
-        'https://flutter-quiz-app-35053-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: 'https://flutter-quiz-app-35053-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'flutter-quiz-app-35053.appspot.com',
   );
 
@@ -59,8 +58,7 @@ class DefaultFirebaseOptions {
     appId: '1:218349720331:android:b3f5a2dbe3b0007604480e',
     messagingSenderId: '218349720331',
     projectId: 'flutter-quiz-app-35053',
-    databaseURL:
-        'https://flutter-quiz-app-35053-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: 'https://flutter-quiz-app-35053-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'flutter-quiz-app-35053.appspot.com',
   );
 
@@ -69,8 +67,7 @@ class DefaultFirebaseOptions {
     appId: '1:218349720331:ios:654dd0a28f6a9fc804480e',
     messagingSenderId: '218349720331',
     projectId: 'flutter-quiz-app-35053',
-    databaseURL:
-        'https://flutter-quiz-app-35053-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: 'https://flutter-quiz-app-35053-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'flutter-quiz-app-35053.appspot.com',
     iosBundleId: 'com.example.flutterQuizApp',
   );
@@ -80,8 +77,7 @@ class DefaultFirebaseOptions {
     appId: '1:218349720331:ios:531941e7b3b3df3c04480e',
     messagingSenderId: '218349720331',
     projectId: 'flutter-quiz-app-35053',
-    databaseURL:
-        'https://flutter-quiz-app-35053-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: 'https://flutter-quiz-app-35053-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'flutter-quiz-app-35053.appspot.com',
     iosBundleId: 'com.example.flutterQuizApp.RunnerTests',
   );

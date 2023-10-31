@@ -1,3 +1,5 @@
+import 'package:flutter_web_plugins/url_strategy.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -11,6 +13,8 @@ Future<Widget> bootstrap() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  usePathUrlStrategy();
 
   return const AppProvider(
     child: App(),

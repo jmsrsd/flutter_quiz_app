@@ -48,15 +48,13 @@ class _HomePageState extends State<HomePage> {
       children: [
         PlayButton(
           onPressed: () {
-            context.push(quizRoute.path);
+            context.go(quizRoute.path);
           },
         ),
         const Gap(6),
         TopicsButton(
           onPressed: () {
-            context.push(
-              topicsRoute.path,
-            );
+            context.go(topicsRoute.path);
           },
         ),
       ],

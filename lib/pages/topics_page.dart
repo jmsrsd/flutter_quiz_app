@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../blocs/quiz_bloc.dart';
 import '../components/buttons/topic_button.dart';
 import '../components/gap.dart';
+import '../routes/home_route.dart';
 import '../routes/quiz_route.dart';
 
 class TopicsPage extends StatelessWidget {
@@ -33,7 +34,7 @@ class TopicsPage extends StatelessWidget {
                       aspectRatio: 1.0,
                       child: InkWell(
                         onTap: () {
-                          context.pop();
+                          context.go(homeRoute.path);
                         },
                         child: const Center(
                           child: Icon(
@@ -93,7 +94,7 @@ class TopicsPage extends StatelessWidget {
                         TopicButton(
                           label: e,
                           onPressed: () {
-                            context.push(quizRoute.path);
+                            context.go(quizRoute.path);
                           },
                         ),
                         const Gap(6),

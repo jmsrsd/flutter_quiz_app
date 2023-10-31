@@ -6,7 +6,7 @@ import '../routes/result_route.dart';
 import '../routes/topics_route.dart';
 
 GoRouter get router {
-  return GoRouter(
+  final result = GoRouter(
     initialLocation: homeRoute.path,
     routes: [
       homeRoute,
@@ -15,4 +15,6 @@ GoRouter get router {
       resultRoute,
     ],
   );
+
+  return result;
 }

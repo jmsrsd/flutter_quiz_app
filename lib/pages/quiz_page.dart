@@ -28,7 +28,7 @@ class QuizPage extends StatelessWidget {
                       aspectRatio: 1.0,
                       child: InkWell(
                         onTap: () {
-                          context.pop();
+                          context.go(homeRoute.path);
                         },
                         child: const Center(
                           child: Icon(Icons.arrow_back_ios_outlined),
