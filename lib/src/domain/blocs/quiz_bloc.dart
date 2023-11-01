@@ -29,4 +29,8 @@ class QuizBloc extends Cubit<QuizCollection> {
 
     return error == null;
   }
+
+  List<String> get topics {
+    return state.toJson().keys.toList();
+  }
 }

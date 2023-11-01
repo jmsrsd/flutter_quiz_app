@@ -38,18 +38,10 @@ class _TopicsPageState extends State<TopicsPage> {
   build(context) {
     final bloc = context.watch<QuizBloc>();
 
-    final state = bloc.state;
+    final query = search.text.trim();
 
-    final json = state.toJson();
-
-    final topics = json.keys.where((k) {
-      final query = search.text.trim();
-
-      if (query.isEmpty) {
-        return true;
-      }
-
-      return k.contains(query);
+    final topics = bloc.topics.where((k) {
+      return query.isEmpty ? true : k.contains(query);
     }).toList();
 
     return Scaffold(
