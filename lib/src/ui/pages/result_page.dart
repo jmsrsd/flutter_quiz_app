@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../domain/blocs/topic_bloc.dart';
 import '../routes/home_route.dart';
 
 class ResultPage extends StatelessWidget {
@@ -11,6 +13,14 @@ class ResultPage extends StatelessWidget {
 
   @override
   build(context) {
+    final topic = context.watch<TopicBloc>();
+
+    final quizzes = topic.quizzes;
+
+    final answers = quizzes.map((e) => e.answer).toList();
+
+    final corrects = answers.map((e) => e?.correct).toList();
+
     return Scaffold(
       body: Column(
         children: [
@@ -91,24 +101,22 @@ class ResultPage extends StatelessWidget {
                         alignment: Alignment.center,
                         child: const Text('Your Report'),
                       ),
-                      const Gap(12),
-                      const Text('Who is lorem ipsum dolor sit?'),
-                      const Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.check),
-                          Text('Foo Bar'),
-                        ],
-                      ),
-                      const Gap(12),
-                      const Text('Who is lorem ipsum dolor sit?'),
-                      const Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.check),
-                          Text('Foo Bar'),
-                        ],
-                      ),
+                      if (quizzes.isNotEmpty)
+                        ...quizzes.map((e) {
+                          return [
+                            const Gap(12),
+                            Text('${e.question}'),
+                            const Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.check),
+                                Text('Foo Bar'),
+                              ],
+                            ),
+                          ];
+                        }).reduce((a, b) {
+                          return [...a, ...b];
+                        }).sublist(1),
                     ],
                   ),
                 ),

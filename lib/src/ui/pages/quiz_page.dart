@@ -1,17 +1,58 @@
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../domain/blocs/topic_bloc.dart';
 import '../routes/home_route.dart';
 import '../routes/result_route.dart';
 
-class QuizPage extends StatelessWidget {
+class QuizPage extends StatefulWidget {
   const QuizPage({
     super.key,
   });
 
   @override
+  State<QuizPage> createState() => _QuizPageState();
+}
+
+class _QuizPageState extends State<QuizPage> {
+  late int quizIndex;
+
+  @override
+  initState() {
+    super.initState();
+
+    quizIndex = 0;
+  }
+
+  @override
   build(context) {
+    final topic = context.watch<TopicBloc>();
+
+    final quizzes = topic.quizzes;
+
+    final quiz = quizzes[quizIndex];
+
+    final answer = quiz.answer;
+
+    final incorrects = answer?.incorrects ?? [];
+
+    final correct = answer?.correct;
+
+    final options = [
+      ...incorrects,
+      correct,
+    ].where((e) {
+      return e != null;
+    }).map((e) {
+      return MapEntry(Random().nextDouble(), e as String);
+    }).toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+
     return Scaffold(
       body: Column(
         children: [
@@ -70,7 +111,7 @@ class QuizPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        height: 48 * 5,
+                        height: 48 * 7,
                         width: double.maxFinite,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(24),
@@ -84,10 +125,9 @@ class QuizPage extends StatelessWidget {
                           children: [
                             Container(
                               alignment: Alignment.center,
-                              height: 48,
-                              child: const Text(
-                                'Lorem ipsum dolor sit\n'
-                                'Lorem ipsum dolor sit',
+                              height: 48 * 2,
+                              child: Text(
+                                quiz.question ?? '',
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -104,7 +144,34 @@ class QuizPage extends StatelessWidget {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  child: const Placeholder(),
+                                  child: Builder(
+                                    builder: (context) {
+                                      const fit = BoxFit.cover;
+                                      const alignment = Alignment.center;
+                                      const width = double.maxFinite;
+                                      const height = double.maxFinite;
+
+                                      return CachedNetworkImage(
+                                        imageUrl: '${quiz.image}',
+                                        fit: fit,
+                                        alignment: alignment,
+                                        width: width,
+                                        height: height,
+                                        errorWidget: (context, _, __) {
+                                          const imageUrl =
+                                              'https://health.wyo.gov/wp-content/uploads/2017/05/question-mark-on-chalkboard.jpg';
+
+                                          return CachedNetworkImage(
+                                            imageUrl: imageUrl,
+                                            fit: fit,
+                                            alignment: alignment,
+                                            width: width,
+                                            height: height,
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
@@ -112,53 +179,33 @@ class QuizPage extends StatelessWidget {
                         ),
                       ),
                       const Gap(24),
-                      FilledButton(
-                        onPressed: () {
-                          context.go(resultRoute.path);
-                        },
-                        style: const ButtonStyle(
-                          fixedSize: MaterialStatePropertyAll(
-                            Size(double.maxFinite, 48),
-                          ),
-                        ),
-                        child: const Text('Hello, World!'),
-                      ),
-                      const Gap(6),
-                      FilledButton(
-                        onPressed: () {
-                          context.go(resultRoute.path);
-                        },
-                        style: const ButtonStyle(
-                          fixedSize: MaterialStatePropertyAll(
-                            Size(double.maxFinite, 48),
-                          ),
-                        ),
-                        child: const Text('Hello, World!'),
-                      ),
-                      const Gap(6),
-                      FilledButton(
-                        onPressed: () {
-                          context.go(resultRoute.path);
-                        },
-                        style: const ButtonStyle(
-                          fixedSize: MaterialStatePropertyAll(
-                            Size(double.maxFinite, 48),
-                          ),
-                        ),
-                        child: const Text('Hello, World!'),
-                      ),
-                      const Gap(6),
-                      FilledButton(
-                        onPressed: () {
-                          context.go(resultRoute.path);
-                        },
-                        style: const ButtonStyle(
-                          fixedSize: MaterialStatePropertyAll(
-                            Size(double.maxFinite, 48),
-                          ),
-                        ),
-                        child: const Text('Hello, World!'),
-                      ),
+                      if (options.isNotEmpty)
+                        ...options.map((e) {
+                          return e.value;
+                        }).map((e) {
+                          return [
+                            const Gap(6),
+                            FilledButton(
+                              onPressed: () {
+                                if (quizIndex + 1 >= quizzes.length) {
+                                  context.go(resultRoute.path);
+
+                                  return;
+                                }
+
+                                setState(() => quizIndex += 1);
+                              },
+                              style: const ButtonStyle(
+                                fixedSize: MaterialStatePropertyAll(
+                                  Size(double.maxFinite, 48),
+                                ),
+                              ),
+                              child: Text(e),
+                            ),
+                          ];
+                        }).reduce((a, b) {
+                          return [...a, ...b];
+                        }).sublist(1),
                     ],
                   ),
                 ),

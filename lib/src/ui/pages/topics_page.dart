@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../domain/blocs/quiz_bloc.dart';
+import '../../domain/blocs/topic_bloc.dart';
 import '../components/buttons/topic_button.dart';
 import '../routes/home_route.dart';
 import '../routes/quiz_route.dart';
@@ -36,11 +37,13 @@ class _TopicsPageState extends State<TopicsPage> {
 
   @override
   build(context) {
-    final bloc = context.watch<QuizBloc>();
+    final topic = context.watch<TopicBloc>();
+
+    final quiz = context.watch<QuizBloc>();
 
     final query = search.text.trim();
 
-    final topics = bloc.topics.where((k) {
+    final topics = quiz.topics.where((k) {
       return query.isEmpty ? true : k.contains(query);
     }).toList();
 
@@ -124,6 +127,8 @@ class _TopicsPageState extends State<TopicsPage> {
                           TopicButton(
                             label: e,
                             onPressed: () {
+                              topic.set(e);
+
                               context.go(quizRoute.path);
                             },
                           ),

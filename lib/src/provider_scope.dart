@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'data/repositories/quiz_repository.dart';
-import 'domain/blocs/answer_bloc.dart';
-import 'domain/blocs/question_bloc.dart';
 import 'domain/blocs/quiz_bloc.dart';
+import 'domain/blocs/topic_bloc.dart';
 
 class ProviderScope extends StatelessWidget {
   final Widget child;
@@ -23,8 +22,7 @@ class ProviderScope extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => QuizBloc.of(context)),
-          BlocProvider(create: (_) => QuestionBloc()),
-          BlocProvider(create: (_) => AnswerBloc()),
+          BlocProvider(create: (context) => TopicBloc.of(context)),
         ],
         child: child,
       ),
