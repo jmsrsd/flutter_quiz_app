@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-import '../components/gap.dart';
 import '../routes/home_route.dart';
 import '../routes/result_route.dart';
 

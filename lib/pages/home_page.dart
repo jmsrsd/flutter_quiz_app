@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../blocs/quiz_bloc.dart';
 import '../components/buttons/rate_us_button.dart';
 import '../components/buttons/share_button.dart';
 import '../components/buttons/topics_button.dart';
-import '../components/gap.dart';
 import '../components/buttons/play_button.dart';
 import '../layouts/home_layout.dart';
-import '../models/quiz_collection.dart';
-import '../repositories/quiz_repository.dart';
 import '../routes/quiz_route.dart';
 import '../routes/topics_route.dart';
-import '../services/quiz_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
