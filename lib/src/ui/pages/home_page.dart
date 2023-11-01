@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-import '../blocs/quiz_bloc.dart';
+import '../../domain/blocs/quiz_bloc.dart';
+import '../components/buttons/play_button.dart';
 import '../components/buttons/rate_us_button.dart';
 import '../components/buttons/share_button.dart';
 import '../components/buttons/topics_button.dart';
-import '../components/buttons/play_button.dart';
 import '../layouts/home_layout.dart';
 import '../routes/quiz_route.dart';
 import '../routes/topics_route.dart';
@@ -78,36 +78,6 @@ class _HomePageState extends State<HomePage> {
     return FutureBuilder(
       future: quiz.fetch(),
       builder: (context, snapshot) {
-        // if (snapshot.connectionState != ConnectionState.done) {
-        //   return const Center(
-        //     child: CircularProgressIndicator(),
-        //   );
-        // }
-
-        // if (snapshot.data == false) {
-        //   WidgetsBinding.instance.addPostFrameCallback((_) {
-        //     showDialog(
-        //       context: context,
-        //       builder: (context) {
-        //         return AlertDialog(
-        //           title: const Text(
-        //             'Something went wrong!',
-        //           ),
-        //           content: const Text(
-        //             'There is something wrong in our end.',
-        //           ),
-        //           actions: [
-        //             TextButton(
-        //               onPressed: () => context.pop(),
-        //               child: const Text('DISMISS'),
-        //             ),
-        //           ],
-        //         );
-        //       },
-        //     );
-        //   });
-        // }
-
         return HomeLayout(
           children: [
             const Gap(48),

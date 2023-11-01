@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 
 class QuizCollection extends Equatable {
   const QuizCollection({
-    required this.animals,
-    required this.gk,
-    required this.politics,
+    this.animals = const [],
+    this.gk = const [],
+    this.politics = const [],
   });
 
   final List<Quiz> animals;
@@ -25,22 +25,22 @@ class QuizCollection extends Equatable {
 
   factory QuizCollection.fromJson(Map<String, dynamic> json) {
     return QuizCollection(
-      animals: json["animals"] == null
+      animals: json['animals'] == null
           ? []
-          : List<Quiz>.from(json["animals"]!.map((x) => Quiz.fromJson(x))),
-      gk: json["gk"] == null
+          : List<Quiz>.from(json['animals']!.map((x) => Quiz.fromJson(x))),
+      gk: json['gk'] == null
           ? []
-          : List<Quiz>.from(json["gk"]!.map((x) => Quiz.fromJson(x))),
-      politics: json["politics"] == null
+          : List<Quiz>.from(json['gk']!.map((x) => Quiz.fromJson(x))),
+      politics: json['politics'] == null
           ? []
-          : List<Quiz>.from(json["politics"]!.map((x) => Quiz.fromJson(x))),
+          : List<Quiz>.from(json['politics']!.map((x) => Quiz.fromJson(x))),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "animals": animals.map((x) => x.toJson()).toList(),
-        "gk": gk.map((x) => x.toJson()).toList(),
-        "politics": politics.map((x) => x.toJson()).toList(),
+        'animals': animals.map((x) => x.toJson()).toList(),
+        'gk': gk.map((x) => x.toJson()).toList(),
+        'politics': politics.map((x) => x.toJson()).toList(),
       };
 
   @override
@@ -76,16 +76,16 @@ class Quiz extends Equatable {
 
   factory Quiz.fromJson(Map<String, dynamic> json) {
     return Quiz(
-      answer: json["answer"] == null ? null : Answer.fromJson(json["answer"]),
-      question: json["question"],
-      image: json["image"],
+      answer: json['answer'] == null ? null : Answer.fromJson(json['answer']),
+      question: json['question'],
+      image: json['image'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "answer": answer?.toJson(),
-        "question": question,
-        "image": image,
+        'answer': answer?.toJson(),
+        'question': question,
+        'image': image,
       };
 
   @override
@@ -117,16 +117,16 @@ class Answer extends Equatable {
 
   factory Answer.fromJson(Map<String, dynamic> json) {
     return Answer(
-      correct: json["correct"],
-      incorrects: json["incorrects"] == null
+      correct: json['correct'],
+      incorrects: json['incorrects'] == null
           ? []
-          : List<String>.from(json["incorrects"]!.map((x) => x)),
+          : List<String>.from(json['incorrects']!.map((x) => x)),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "correct": correct,
-        "incorrects": incorrects.map((x) => x).toList(),
+        'correct': correct,
+        'incorrects': incorrects.map((x) => x).toList(),
       };
 
   @override

@@ -1,20 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../models/quiz_collection.dart';
-import '../repositories/quiz_repository.dart';
-import '../utils/db.dart';
+import '../../common/models/quiz_collection.dart';
+import '../../data/db.dart';
 
 class QuizService {
   final BuildContext context;
 
   QuizService.of(this.context);
 
-  Future<void> collectQuiz() async {
-    final repository = context.read<QuizRepository>();
-
+  Future<QuizCollection> collectQuiz() async {
     final data = await db.child('quiz').get();
 
     final encoded = jsonEncode(data.value ?? {});
@@ -29,6 +25,6 @@ class QuizService {
 
     debugPrint('${result.runtimeType}: $result');
 
-    await repository.put(result.toJson());
+    return result;
   }
 }

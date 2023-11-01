@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'configs/bootstrap.dart';
+import 'src/bootstrap.dart';
 
 void main() async {
   await bootstrap().then(runApp);

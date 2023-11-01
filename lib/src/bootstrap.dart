@@ -1,12 +1,11 @@
-import 'package:flutter_web_plugins/url_strategy.dart';
-
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../firebase_options.dart';
+import '../../firebase_options.dart';
 import 'app.dart';
-import 'app_provider.dart';
+import 'provider_scope.dart';
 
 Future<Widget> bootstrap() async {
   /// Returns an instance of the binding that implements [WidgetsBinding].
@@ -27,7 +26,7 @@ Future<Widget> bootstrap() async {
   ///
   usePathUrlStrategy();
 
-  return const AppProvider(
+  return const ProviderScope(
     child: App(),
   );
 }

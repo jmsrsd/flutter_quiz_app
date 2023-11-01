@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-import '../blocs/quiz_bloc.dart';
+import '../../domain/blocs/quiz_bloc.dart';
 import '../components/buttons/topic_button.dart';
 import '../routes/home_route.dart';
 import '../routes/quiz_route.dart';
@@ -39,19 +39,6 @@ class _TopicsPageState extends State<TopicsPage> {
     final bloc = context.watch<QuizBloc>();
 
     final state = bloc.state;
-
-    if (state == null) {
-      return Scaffold(
-        body: FutureBuilder(
-          future: bloc.fetch(),
-          builder: (context, _) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ),
-      );
-    }
 
     final json = state.toJson();
 
@@ -134,21 +121,29 @@ class _TopicsPageState extends State<TopicsPage> {
                 alignment: Alignment.center,
                 child: SizedBox(
                   width: 320,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: topics.isEmpty
-                        ? []
-                        : topics.map((e) {
-                            return [
-                              TopicButton(
-                                label: e,
-                                onPressed: () {
-                                  context.go(quizRoute.path);
-                                },
-                              ),
-                              const Gap(6),
-                            ];
-                          }).reduce((a, b) => [...a, ...b]),
+                  child: Builder(
+                    builder: (context) {
+                      if (topics.isEmpty) {
+                        return const SizedBox();
+                      }
+
+                      final children = topics.map((e) {
+                        return [
+                          TopicButton(
+                            label: e,
+                            onPressed: () {
+                              context.go(quizRoute.path);
+                            },
+                          ),
+                          const Gap(6),
+                        ];
+                      }).reduce((a, b) => [...a, ...b]);
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: children,
+                      );
+                    },
                   ),
                 ),
               ),
