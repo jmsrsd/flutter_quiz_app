@@ -71,8 +71,8 @@ class ResultPage extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(
-                top: 6,
-                bottom: 12,
+                top: 24,
+                bottom: 48,
               ),
               child: Container(
                 width: double.maxFinite,

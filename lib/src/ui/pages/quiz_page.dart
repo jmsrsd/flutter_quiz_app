@@ -72,12 +72,24 @@ class _QuizPageState extends State<QuizPage> {
       yield 1.0 - ((timer - time) / timerDuration);
     }
 
+    if (result != null) {
+      return;
+    }
+
     onTimeout();
   }
 
-  void showResult(String result, List<Quiz> quizzes) {
+  void showResult({
+    required ScoreItem result,
+    required List<Quiz> quizzes,
+  }) {
+    score.set([
+      ...score.state,
+      result,
+    ]);
+
     setState(() {
-      this.result = result;
+      this.result = result.answer;
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -181,22 +193,32 @@ class _QuizPageState extends State<QuizPage> {
               ],
             ),
           ),
-          Container(
-            color: const Color(0xFF2c436e),
-            child: StreamBuilder<double>(
-              stream: getTimerStream(onTimeout: () {
-                showResult('*', quizzes);
-              }),
-              builder: (context, snapshot) {
-                final value = snapshot.data ?? 0.0;
+          result != null
+              ? const SizedBox()
+              : Container(
+                  color: const Color(0xFF2c436e),
+                  child: StreamBuilder<double>(
+                    stream: getTimerStream(onTimeout: () {
+                      showResult(
+                        result: ScoreItem(
+                          question: '$question',
+                          answer: '...',
+                          isCorrect: false,
+                        ),
+                        quizzes: quizzes,
+                      );
+                    }),
+                    builder: (context, snapshot) {
+                      final value = snapshot.data ?? 0.0;
 
-                return LinearProgressIndicator(
-                  valueColor: const AlwaysStoppedAnimation(Color(0xFFfcd67e)),
-                  value: value,
-                );
-              },
-            ),
-          ),
+                      return LinearProgressIndicator(
+                        valueColor:
+                            const AlwaysStoppedAnimation(Color(0xFFfcd67e)),
+                        value: value,
+                      );
+                    },
+                  ),
+                ),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(
@@ -296,22 +318,18 @@ class _QuizPageState extends State<QuizPage> {
                             AnimatedSwitcher(
                               duration: const Duration(seconds: 3),
                               child: FilledButton(
-                                onPressed: () {
-                                  if (result != null) {
-                                    return;
-                                  }
-
-                                  score.set([
-                                    ...score.state,
-                                    ScoreItem(
-                                      question: '$question',
-                                      answer: option,
-                                      isCorrect: option == correct,
-                                    ),
-                                  ]);
-
-                                  showResult(option, quizzes);
-                                },
+                                onPressed: result != null
+                                    ? null
+                                    : () {
+                                        showResult(
+                                          result: ScoreItem(
+                                            question: '$question',
+                                            answer: option,
+                                            isCorrect: option == correct,
+                                          ),
+                                          quizzes: quizzes,
+                                        );
+                                      },
                                 style: ButtonStyle(
                                   fixedSize: const MaterialStatePropertyAll(
                                     Size(double.maxFinite, 48),
