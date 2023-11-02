@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../common/models/score_item.dart';
+import '../../domain/blocs/score_bloc.dart';
 import '../../domain/blocs/topic_bloc.dart';
 import '../routes/home_route.dart';
 import '../routes/result_route.dart';
@@ -22,11 +24,17 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   late int quizIndex;
 
+  ScoreBloc get score {
+    return context.read<ScoreBloc>();
+  }
+
   @override
   initState() {
     super.initState();
 
     quizIndex = 0;
+
+    score.set(const []);
   }
 
   @override
@@ -36,6 +44,8 @@ class _QuizPageState extends State<QuizPage> {
     final quizzes = topic.quizzes;
 
     final quiz = quizzes[quizIndex];
+
+    final question = quiz.question;
 
     final answer = quiz.answer;
 
@@ -127,7 +137,7 @@ class _QuizPageState extends State<QuizPage> {
                               alignment: Alignment.center,
                               height: 48 * 2,
                               child: Text(
-                                quiz.question ?? '',
+                                '$question',
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -182,11 +192,20 @@ class _QuizPageState extends State<QuizPage> {
                       if (options.isNotEmpty)
                         ...options.map((e) {
                           return e.value;
-                        }).map((e) {
+                        }).map((option) {
                           return [
                             const Gap(6),
                             FilledButton(
                               onPressed: () {
+                                score.set([
+                                  ...score.state,
+                                  ScoreItem(
+                                    question: '$question',
+                                    answer: option,
+                                    isCorrect: option == correct,
+                                  ),
+                                ]);
+
                                 if (quizIndex + 1 >= quizzes.length) {
                                   context.go(resultRoute.path);
 
@@ -200,7 +219,7 @@ class _QuizPageState extends State<QuizPage> {
                                   Size(double.maxFinite, 48),
                                 ),
                               ),
-                              child: Text(e),
+                              child: Text(option),
                             ),
                           ];
                         }).reduce((a, b) {

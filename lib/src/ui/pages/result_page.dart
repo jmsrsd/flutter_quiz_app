@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../domain/blocs/topic_bloc.dart';
+import '../../domain/blocs/score_bloc.dart';
 import '../routes/home_route.dart';
 
 class ResultPage extends StatelessWidget {
@@ -13,13 +13,25 @@ class ResultPage extends StatelessWidget {
 
   @override
   build(context) {
-    final topic = context.watch<TopicBloc>();
+    final theme = Theme.of(context);
 
-    final quizzes = topic.quizzes;
+    final textTheme = theme.textTheme;
 
-    final answers = quizzes.map((e) => e.answer).toList();
+    final score = context.watch<ScoreBloc>();
 
-    final corrects = answers.map((e) => e?.correct).toList();
+    final results = score.state;
+
+    final correctCount = score.correctCount;
+
+    final scoring = results.isEmpty
+        ? 0.0
+        : correctCount.toDouble() / results.length.toDouble();
+
+    if (results.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go(homeRoute.path);
+      });
+    }
 
     return Scaffold(
       body: Column(
@@ -29,7 +41,10 @@ class ResultPage extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                const Text('Your Score'),
+                Text(
+                  'Your Score',
+                  style: textTheme.titleMedium,
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -40,7 +55,9 @@ class ResultPage extends StatelessWidget {
                           context.go(homeRoute.path);
                         },
                         child: const Center(
-                          child: Icon(Icons.arrow_back_ios_outlined),
+                          child: Icon(
+                            Icons.arrow_back_ios_outlined,
+                          ),
                         ),
                       ),
                     ),
@@ -68,18 +85,21 @@ class ResultPage extends StatelessWidget {
                       Container(
                         alignment: Alignment.center,
                         width: double.maxFinite,
-                        child: const SizedBox.square(
+                        child: SizedBox.square(
                           dimension: 120,
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
                               SizedBox.expand(
-                                child: CircularProgressIndicator(
-                                  value: 1.0,
+                                child: Transform.scale(
+                                  scaleX: -1,
+                                  child: CircularProgressIndicator(
+                                    value: scoring,
+                                  ),
                                 ),
                               ),
                               Text(
-                                '4 / 5',
+                                '$correctCount / ${results.length}',
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -95,22 +115,30 @@ class ResultPage extends StatelessWidget {
                           child: const Text('Share your score'),
                         ),
                       ),
-                      const Gap(12),
                       Container(
-                        width: double.maxFinite,
+                        height: 48 * 2,
                         alignment: Alignment.center,
-                        child: const Text('Your Report'),
+                        child: Container(
+                          width: double.maxFinite,
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Your Report',
+                            style: textTheme.titleMedium,
+                          ),
+                        ),
                       ),
-                      if (quizzes.isNotEmpty)
-                        ...quizzes.map((e) {
+                      if (results.isNotEmpty)
+                        ...results.map((e) {
                           return [
+                            const Gap(24),
+                            Text(e.question),
                             const Gap(12),
-                            Text('${e.question}'),
-                            const Row(
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Icon(Icons.check),
-                                Text('Foo Bar'),
+                                Icon(e.isCorrect ? Icons.check : Icons.close),
+                                const Gap(12),
+                                Text(e.answer),
                               ],
                             ),
                           ];

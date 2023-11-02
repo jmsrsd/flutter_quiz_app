@@ -6,6 +6,41 @@ import '../../domain/blocs/topic_bloc.dart';
 import '../pages/quiz_page.dart';
 import 'home_route.dart';
 
+Stream<String?> observeTopic(
+  BuildContext context, {
+  required TopicBloc topic,
+}) async* {
+  var isRunning = true;
+
+  Future.delayed(const Duration(seconds: 3)).then((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (topic.quizzes.isNotEmpty) {
+        isRunning = false;
+
+        return;
+      }
+
+      context.go(homeRoute.path);
+    });
+  });
+
+  while (true) {
+    if (isRunning == false) {
+      return;
+    }
+
+    await Future.delayed(Duration.zero);
+
+    final isQuizzesEmpty = topic.quizzes.isEmpty;
+
+    yield topic.state;
+
+    if (isQuizzesEmpty == false) {
+      return;
+    }
+  }
+}
+
 GoRoute get quizRoute {
   return GoRoute(
     path: '/quiz',
@@ -14,31 +49,14 @@ GoRoute get quizRoute {
 
       return StreamBuilder(
         initialData: '*',
-        stream: (() async* {
-          const step = 100;
-
-          for (var ms = 0; ms < 3000; ms += step) {
-            await Future.delayed(const Duration(milliseconds: step));
-
-            yield topic.state;
-
-            if (topic.quizzes.isNotEmpty) {
-              yield topic.state;
-
-              return;
-            }
-          }
-
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (topic.quizzes.isNotEmpty) {
-              return;
-            }
-
-            context.go(homeRoute.path);
-          });
-        })(),
+        stream: observeTopic(
+          context,
+          topic: topic,
+        ),
         builder: (context, snapshot) {
-          if (snapshot.data != '*' && topic.quizzes.isNotEmpty) {
+          final isReady = snapshot.data != '*' && topic.quizzes.isNotEmpty;
+
+          if (isReady) {
             return const QuizPage();
           }
 

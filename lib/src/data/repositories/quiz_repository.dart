@@ -9,18 +9,18 @@ import '../db.dart';
 class QuizRepository {
   late LazyBox<String> _box;
 
-  Future<void> init() async {
+  Future<void> _init() async {
     _box = await Hive.openLazyBox('quiz');
   }
 
   Future<void> put(QuizCollection value) async {
-    await init();
+    await _init();
 
     await _box.put('*', jsonEncode(value.toJson()));
   }
 
   Future<QuizCollection> get() async {
-    await init();
+    await _init();
 
     try {
       await put(await fetch());

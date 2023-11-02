@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'data/repositories/quiz_repository.dart';
 import 'domain/blocs/quiz_bloc.dart';
+import 'domain/blocs/score_bloc.dart';
 import 'domain/blocs/topic_bloc.dart';
 
 class ProviderScope extends StatelessWidget {
@@ -17,12 +18,13 @@ class ProviderScope extends StatelessWidget {
   build(context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (_) => QuizRepository()..init()),
+        RepositoryProvider(create: (_) => QuizRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => QuizBloc.of(context)),
           BlocProvider(create: (context) => TopicBloc.of(context)),
+          BlocProvider(create: (context) => ScoreBloc.of(context)),
         ],
         child: child,
       ),
