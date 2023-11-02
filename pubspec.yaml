@@ -47,6 +47,7 @@ dependencies:
   hive_flutter: ^1.1.0
   gap: ^3.0.1
   cached_network_image: ^3.3.0
+  share_plus: ^7.2.1
 
 dev_dependencies:
   flutter_test:

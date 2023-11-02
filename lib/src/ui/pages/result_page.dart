@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../domain/blocs/score_bloc.dart';
 import '../routes/home_route.dart';
@@ -122,7 +123,12 @@ class ResultPage extends StatelessWidget {
                         width: double.maxFinite,
                         alignment: Alignment.center,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Share.share(
+                              'I got my $correctCount out of ${results.length} answers correct on Flutter Quiz App!',
+                              subject: 'Flutter Quiz App Result',
+                            );
+                          },
                           style: ButtonStyle(
                             shape: MaterialStatePropertyAll(
                               RoundedRectangleBorder(
