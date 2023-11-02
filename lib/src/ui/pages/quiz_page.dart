@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../common/models/quiz_collection.dart';
 import '../../common/models/score_item.dart';
 import '../../domain/blocs/score_bloc.dart';
 import '../../domain/blocs/topic_bloc.dart';
@@ -24,8 +25,66 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   late int quizIndex;
 
+  static const timerDuration = 5000.0;
+
+  late double timer;
+
+  String? result;
+
+  final options = <String>[];
+
   ScoreBloc get score {
     return context.read<ScoreBloc>();
+  }
+
+  double get now {
+    return DateTime.now().millisecondsSinceEpoch.toDouble();
+  }
+
+  void updateTimer() {
+    timer = now + timerDuration;
+  }
+
+  void proceedThrough(List<Quiz> quizzes) {
+    if (quizIndex + 1 >= quizzes.length) {
+      context.go(resultRoute.path);
+
+      return;
+    }
+
+    setState(() {
+      quizIndex += 1;
+
+      updateTimer();
+
+      result = null;
+    });
+  }
+
+  Stream<double> getTimerStream({required VoidCallback onTimeout}) async* {
+    for (var time = now; time <= timer; time = now) {
+      await Future.delayed(Duration.zero);
+
+      if (result != null) {
+        return;
+      }
+
+      yield 1.0 - ((timer - time) / timerDuration);
+    }
+
+    onTimeout();
+  }
+
+  void showResult(String result, List<Quiz> quizzes) {
+    setState(() {
+      this.result = result;
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(seconds: 2));
+
+      proceedThrough(quizzes);
+    });
   }
 
   @override
@@ -35,6 +94,8 @@ class _QuizPageState extends State<QuizPage> {
     quizIndex = 0;
 
     score.set(const []);
+
+    updateTimer();
   }
 
   @override
@@ -57,15 +118,21 @@ class _QuizPageState extends State<QuizPage> {
 
     final correct = answer?.correct;
 
-    final options = [
-      ...incorrects,
-      correct,
-    ].where((e) {
-      return e != null;
-    }).map((e) {
-      return MapEntry(Random().nextDouble(), e as String);
-    }).toList()
-      ..sort((a, b) => a.key.compareTo(b.key));
+    if (result == null) {
+      final randomized = [
+        ...incorrects,
+        correct,
+      ].where((e) {
+        return e != null;
+      }).map((e) {
+        return MapEntry(Random().nextDouble(), e as String);
+      }).toList()
+        ..sort((a, b) => a.key.compareTo(b.key));
+
+      options
+        ..clear()
+        ..addAll(randomized.map((e) => e.value));
+    }
 
     return Scaffold(
       body: Column(
@@ -82,24 +149,15 @@ class _QuizPageState extends State<QuizPage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Opacity(
-                      opacity: quizIndex > 0 ? 1.0 : 0.6,
-                      child: AspectRatio(
-                        aspectRatio: 1.0,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              quizIndex = (quizIndex - 1).clamp(0, quizIndex);
-
-                              score.set(
-                                score.state.sublist(0, score.state.length - 1),
-                              );
-                            });
-                          },
-                          child: const Center(
-                            child: Icon(
-                              Icons.arrow_back_ios_outlined,
-                            ),
+                    AspectRatio(
+                      aspectRatio: 1.0,
+                      child: InkWell(
+                        onTap: () {
+                          context.go(homeRoute.path);
+                        },
+                        child: const Center(
+                          child: Icon(
+                            Icons.arrow_back_ios_outlined,
                           ),
                         ),
                       ),
@@ -125,17 +183,16 @@ class _QuizPageState extends State<QuizPage> {
           ),
           Container(
             color: const Color(0xFF2c436e),
-            child: TweenAnimationBuilder(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-              tween: Tween(
-                begin: quizIndex + 0.0,
-                end: quizIndex + 1.0,
-              ),
-              builder: (context, value, _) {
+            child: StreamBuilder<double>(
+              stream: getTimerStream(onTimeout: () {
+                showResult('*', quizzes);
+              }),
+              builder: (context, snapshot) {
+                final value = snapshot.data ?? 0.0;
+
                 return LinearProgressIndicator(
                   valueColor: const AlwaysStoppedAnimation(Color(0xFFfcd67e)),
-                  value: value / quizzes.length.toDouble(),
+                  value: value,
                 );
               },
             ),
@@ -203,7 +260,9 @@ class _QuizPageState extends State<QuizPage> {
                                         height: height,
                                         errorWidget: (context, _, __) {
                                           const imageUrl =
-                                              'https://health.wyo.gov/wp-content/uploads/2017/05/question-mark-on-chalkboard.jpg';
+                                              'https://health.wyo.gov'
+                                              '/wp-content/uploads/2017/05'
+                                              '/question-mark-on-chalkboard.jpg';
 
                                           return CachedNetworkImage(
                                             imageUrl: imageUrl,
@@ -224,42 +283,48 @@ class _QuizPageState extends State<QuizPage> {
                       ),
                       const Gap(24),
                       if (options.isNotEmpty)
-                        ...options.map((e) {
-                          return e.value;
-                        }).map((option) {
+                        ...options.map((option) {
+                          Color backgroundColor = Colors.white;
+
+                          if (option == result) {
+                            backgroundColor =
+                                option == correct ? Colors.green : Colors.red;
+                          }
+
                           return [
                             const Gap(6),
-                            FilledButton(
-                              onPressed: () {
-                                score.set([
-                                  ...score.state,
-                                  ScoreItem(
-                                    question: '$question',
-                                    answer: option,
-                                    isCorrect: option == correct,
+                            AnimatedSwitcher(
+                              duration: const Duration(seconds: 3),
+                              child: FilledButton(
+                                onPressed: () {
+                                  if (result != null) {
+                                    return;
+                                  }
+
+                                  score.set([
+                                    ...score.state,
+                                    ScoreItem(
+                                      question: '$question',
+                                      answer: option,
+                                      isCorrect: option == correct,
+                                    ),
+                                  ]);
+
+                                  showResult(option, quizzes);
+                                },
+                                style: ButtonStyle(
+                                  fixedSize: const MaterialStatePropertyAll(
+                                    Size(double.maxFinite, 48),
                                   ),
-                                ]);
-
-                                if (quizIndex + 1 >= quizzes.length) {
-                                  context.go(resultRoute.path);
-
-                                  return;
-                                }
-
-                                setState(() => quizIndex += 1);
-                              },
-                              style: const ButtonStyle(
-                                fixedSize: MaterialStatePropertyAll(
-                                  Size(double.maxFinite, 48),
+                                  backgroundColor: MaterialStatePropertyAll(
+                                    backgroundColor,
+                                  ),
                                 ),
-                                backgroundColor: MaterialStatePropertyAll(
-                                  Colors.white,
-                                ),
-                              ),
-                              child: Text(
-                                option,
-                                style: const TextStyle(
-                                  color: Color(0xFF232027),
+                                child: Text(
+                                  option,
+                                  style: const TextStyle(
+                                    color: Color(0xFF232027),
+                                  ),
                                 ),
                               ),
                             ),
