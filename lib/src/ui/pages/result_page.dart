@@ -123,7 +123,22 @@ class ResultPage extends StatelessWidget {
                         alignment: Alignment.center,
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: const Text('Share your score'),
+                          style: ButtonStyle(
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                            ),
+                            backgroundColor: const MaterialStatePropertyAll(
+                              Color(0xFF369ef8),
+                            ),
+                          ),
+                          child: const Text(
+                            'Share your score',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                       Container(
