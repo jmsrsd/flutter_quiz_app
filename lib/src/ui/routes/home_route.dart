@@ -16,21 +16,39 @@ GoRoute get homeRoute {
   return GoRoute(
     path: '/',
     builder: (context, settings) {
+      final theme = Theme.of(context);
+
+      final textTheme = theme.textTheme;
+
       final topic = context.read<TopicBloc>();
 
       return HomePage(
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Flutter Quiz App'),
-            Gap(6),
-            Text('Learn - Take Quiz - Repeat'),
+            Text(
+              'Flutter Quiz App',
+              style: textTheme.titleLarge,
+            ),
+            const Gap(6),
+            Text(
+              'Learn - Take Quiz - Repeat',
+              style: textTheme.labelMedium,
+            ),
           ],
         ),
         image: SizedBox.square(
           dimension: 240,
-          child: Image.asset('assets/bulb.png'),
+          child: Center(
+            child: Image.asset(
+              'assets/bulb.png',
+              fit: BoxFit.contain,
+              alignment: Alignment.center,
+              width: 240,
+              height: 240,
+            ),
+          ),
         ),
         menu: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

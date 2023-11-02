@@ -39,6 +39,10 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   build(context) {
+    final theme = Theme.of(context);
+
+    final textTheme = theme.textTheme;
+
     final topic = context.watch<TopicBloc>();
 
     final quizzes = topic.quizzes;
@@ -71,18 +75,32 @@ class _QuizPageState extends State<QuizPage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                const Text('Quiz'),
+                Text(
+                  'Quiz',
+                  style: textTheme.titleMedium,
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AspectRatio(
-                      aspectRatio: 1.0,
-                      child: InkWell(
-                        onTap: () {
-                          context.go(homeRoute.path);
-                        },
-                        child: const Center(
-                          child: Icon(Icons.arrow_back_ios_outlined),
+                    Opacity(
+                      opacity: quizIndex > 0 ? 1.0 : 0.6,
+                      child: AspectRatio(
+                        aspectRatio: 1.0,
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              quizIndex = (quizIndex - 1).clamp(0, quizIndex);
+
+                              score.set(
+                                score.state.sublist(0, score.state.length - 1),
+                              );
+                            });
+                          },
+                          child: const Center(
+                            child: Icon(
+                              Icons.arrow_back_ios_outlined,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -105,11 +123,28 @@ class _QuizPageState extends State<QuizPage> {
               ],
             ),
           ),
+          Container(
+            color: const Color(0xFF2c436e),
+            child: TweenAnimationBuilder(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease,
+              tween: Tween(
+                begin: quizIndex + 0.0,
+                end: quizIndex + 1.0,
+              ),
+              builder: (context, value, _) {
+                return LinearProgressIndicator(
+                  valueColor: const AlwaysStoppedAnimation(Color(0xFFfcd67e)),
+                  value: value / quizzes.length.toDouble(),
+                );
+              },
+            ),
+          ),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(
-                top: 6,
-                bottom: 12,
+                top: 24,
+                bottom: 48,
               ),
               child: Container(
                 width: double.maxFinite,
@@ -124,10 +159,8 @@ class _QuizPageState extends State<QuizPage> {
                         height: 48 * 7,
                         width: double.maxFinite,
                         decoration: BoxDecoration(
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(24),
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
                         ),
                         padding: const EdgeInsets.all(12),
                         child: Column(
@@ -139,6 +172,9 @@ class _QuizPageState extends State<QuizPage> {
                               child: Text(
                                 '$question',
                                 textAlign: TextAlign.center,
+                                style: textTheme.bodyLarge?.copyWith(
+                                  color: const Color(0xFF232027),
+                                ),
                               ),
                             ),
                             Expanded(
@@ -149,10 +185,8 @@ class _QuizPageState extends State<QuizPage> {
                                 child: Container(
                                   clipBehavior: Clip.antiAlias,
                                   decoration: BoxDecoration(
+                                    color: Colors.white,
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: Colors.black,
-                                    ),
                                   ),
                                   child: Builder(
                                     builder: (context) {
@@ -218,8 +252,16 @@ class _QuizPageState extends State<QuizPage> {
                                 fixedSize: MaterialStatePropertyAll(
                                   Size(double.maxFinite, 48),
                                 ),
+                                backgroundColor: MaterialStatePropertyAll(
+                                  Colors.white,
+                                ),
                               ),
-                              child: Text(option),
+                              child: Text(
+                                option,
+                                style: const TextStyle(
+                                  color: Color(0xFF232027),
+                                ),
+                              ),
                             ),
                           ];
                         }).reduce((a, b) {

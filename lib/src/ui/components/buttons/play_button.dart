@@ -17,7 +17,12 @@ class PlayButton extends StatelessWidget {
           const Size(double.maxFinite, 48),
         ),
       ),
-      child: const Text('PLAY'),
+      child: const Text(
+        'PLAY',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

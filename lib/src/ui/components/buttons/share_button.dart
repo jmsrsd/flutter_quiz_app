@@ -12,8 +12,16 @@ class ShareButton extends StatelessWidget {
   build(context) {
     return TextButton.icon(
       onPressed: onPressed,
-      icon: const Icon(Icons.share),
-      label: const Text('Share'),
+      icon: const Icon(
+        Icons.share,
+        color: Color(0xFF3d82f0),
+      ),
+      label: const Text(
+        'Share',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

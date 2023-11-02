@@ -18,6 +18,20 @@ class ProviderScope extends StatelessWidget {
   build(context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider(create: (_) {
+          var theme = ThemeData.from(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color(0xFF13a6cd),
+              primary: const Color(0xFF13a6cd),
+              brightness: Brightness.dark,
+              background: const Color(0xFF1c1d51),
+              onSurface: Colors.white,
+            ),
+            useMaterial3: true,
+          );
+
+          return theme;
+        }),
         RepositoryProvider(create: (_) => QuizRepository()),
       ],
       child: MultiBlocProvider(

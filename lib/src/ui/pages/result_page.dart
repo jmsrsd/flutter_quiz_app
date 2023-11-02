@@ -90,11 +90,22 @@ class ResultPage extends StatelessWidget {
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
+                              const SizedBox.expand(
+                                child: CircularProgressIndicator(
+                                  value: 1.0,
+                                  valueColor: AlwaysStoppedAnimation(
+                                    Color(0xFF5d5c5d),
+                                  ),
+                                ),
+                              ),
                               SizedBox.expand(
                                 child: Transform.scale(
                                   scaleX: -1,
                                   child: CircularProgressIndicator(
                                     value: scoring,
+                                    valueColor: const AlwaysStoppedAnimation(
+                                      Color(0xFF6dd382),
+                                    ),
                                   ),
                                 ),
                               ),
