@@ -27,8 +27,6 @@ class _QuizPageState extends State<QuizPage> {
 
   static const timerDuration = 5000.0;
 
-  late double timer;
-
   String? result;
 
   final options = <String>[];
@@ -40,6 +38,12 @@ class _QuizPageState extends State<QuizPage> {
   double get now {
     return DateTime.now().millisecondsSinceEpoch.toDouble();
   }
+
+  late double timer;
+
+  late double time = now;
+
+  double timerProgression = 0.0;
 
   void updateTimer() {
     timer = now + timerDuration;
@@ -62,14 +66,16 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   Stream<double> getTimerStream({required VoidCallback onTimeout}) async* {
-    for (var time = now; time <= timer; time = now) {
+    for (time = now; time <= timer; time = now) {
       await Future.delayed(Duration.zero);
 
       if (result != null) {
         return;
       }
 
-      yield 1.0 - ((timer - time) / timerDuration);
+      timerProgression = 1.0 - ((timer - time) / timerDuration);
+
+      yield timerProgression;
     }
 
     if (result != null) {
@@ -193,32 +199,50 @@ class _QuizPageState extends State<QuizPage> {
               ],
             ),
           ),
-          result != null
-              ? const SizedBox()
-              : Container(
-                  color: const Color(0xFF2c436e),
-                  child: StreamBuilder<double>(
-                    stream: getTimerStream(onTimeout: () {
-                      showResult(
-                        result: ScoreItem(
-                          question: '$question',
-                          answer: '...',
-                          isCorrect: false,
-                        ),
-                        quizzes: quizzes,
-                      );
-                    }),
-                    builder: (context, snapshot) {
-                      final value = snapshot.data ?? 0.0;
+          Container(
+            color: const Color(0xFF2c436e),
+            child: Builder(
+              builder: (context) {
+                Widget indicator(
+                  BuildContext context, {
+                  required double value,
+                }) {
+                  return LinearProgressIndicator(
+                    valueColor: const AlwaysStoppedAnimation(
+                      Color(0xFFfcd67e),
+                    ),
+                    value: value,
+                  );
+                }
 
-                      return LinearProgressIndicator(
-                        valueColor:
-                            const AlwaysStoppedAnimation(Color(0xFFfcd67e)),
-                        value: value,
-                      );
-                    },
-                  ),
-                ),
+                if (result != null) {
+                  return indicator(
+                    context,
+                    value: timerProgression,
+                  );
+                }
+
+                return StreamBuilder<double>(
+                  stream: getTimerStream(onTimeout: () {
+                    showResult(
+                      result: ScoreItem(
+                        question: '$question',
+                        answer: '...',
+                        isCorrect: false,
+                      ),
+                      quizzes: quizzes,
+                    );
+                  }),
+                  builder: (context, snapshot) {
+                    return indicator(
+                      context,
+                      value: snapshot.data ?? 0.0,
+                    );
+                  },
+                );
+              },
+            ),
+          ),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(
